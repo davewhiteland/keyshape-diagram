@@ -1,0 +1,32 @@
+.ksd-btn-block {
+  margin:0.25em 0;
+}
+.ksd button {
+  display: inline-block;
+  cursor: pointer;
+  min-width: 6em;
+  height: 2.6em; 
+  border: 1px solid #111;
+  border-radius: 3px;
+  overflow: hidden;
+  font-size: 100%;
+  margin: 0.1em;
+  transition: opacity 0.5s;
+}
+.ksd button.ksd-disabled { opacity: 0.2; cursor:inherit; }
+.ksd button.ksd-step,
+.ksd button.ksd-step.ksd-disabled:hover { background-color: #ffbb33; color: #000; }
+.ksd button.ksd-step:hover              { background-color: #dd9922; }
+.ksd button.ksd-run,
+.ksd button.ksd-run.ksd-disabled:hover  { background-color: #44aa44; color: #fff; }
+.ksd button.ksd-run:hover               { background-color: #117711; }
+.ksd button.ksd-stop,
+.ksd button.ksd-stop.ksd-disabled:hover { background-color: #aa4444; color: #fff; }
+.ksd button.ksd-stop:hover              { background-color: #771111; }
+.ksd button.ksd-stop.ksd-stopping,
+.ksd button.ksd-stop.ksd-stopping:hover { background-color: #ff0000; color: #fff;}
+
+.ksd .ksd-captions p, .ksd .ksd-captions li {padding: 1em; }
+.ksd-hidden {
+  display: none;
+}
