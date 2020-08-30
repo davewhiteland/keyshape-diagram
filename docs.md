@@ -1,5 +1,5 @@
 ---
-title: Keyshape Diagram docs
+title: KeyshapeDiagram docs
 ---
 
 # KeyshapeDiagram: `ksd.js`
@@ -16,7 +16,7 @@ the presentation of animated SVG diagrams that have been created with
 
 See [an example](examples/ksd-example-external).
 
-## What
+## How
 
 * create diagram in Keyshape with _named timeline markers_
 * export as SVG (with embedded or external JS)
@@ -33,7 +33,7 @@ What you get:
 * captions displayed as the animation progresses
 
 
-## How
+## More detail
 
 When you've exported the SVG, embed it with an `<object>` tag with class `ksd`,
 together with (optional) captions. Captions must be in a single container (any
@@ -78,9 +78,9 @@ called `start`, `next`, and `end`:
 <script src="keyshape-diagram.js"></script>
 ```
 
-If the final (stopping) timeline marker is not called `end`, you must explicitly
-tell keyshape-diagram what it is: put a `data-ksd-end-marker` attribute on the 
-`<object>`.
+If the final (terminating) timeline marker is not called `end`, you must
+explicitly tell KeyshapeDiagram what it is: put a `data-ksd-end-marker`
+attribute on the `<object>`.
 
 
 ### In-line
@@ -102,36 +102,64 @@ as the breakpoints in the animation.
 * It's probably best not to make endlessly looping animations: this relies on
   it ending.
 
-Things work fine if you export from Keyshape with JavaSCript animation embedded.
-However, if you're fully in control of the environment you're deploying to,
-it's probably more efficient to handle the Keyshape animation library separately.
-Your call.
+Things work fine if you export from Keyshape with JavaScript animation
+embedded. However, if you're fully in control of the environment you're
+deploying to, it's probably more efficient to handle the Keyshape animation
+library separately. Your call.
 
 CSS animations should work the same, provided they still respond to Keyshape's
 named-markers API.
 
 ## Graceful degradation
 
-If the target browser does not support SVG — frankly very rare, these days — the
-captions will be displayed as a fall back (because they are within the `<object>`
-tag). You can style those with regular CSS (including, if required, hiding them).
+If the target browser does not support SVG — frankly very rare, these days —
+the captions will be displayed as a fall back (because they are within the
+`<object>` tag). You can style those with regular CSS (including, if required,
+hiding them).
 
 Any elements with the class `ksd-no-js` are hidden if JavaScript is enabled.
 Use these for fall-back content.
 
 Currently the SVG diagram _is_ displayed if JavaScript is not available, but
-that is still a work-in-progress.
+that is probably going to change: a work-in-progress.
 
 ## Extra settings
 
-Add `data-` attributes to the `<object>` element.
+Add `data-` attributes to the `<object>` element for more control:
   
-This implies these settoings apply to individual diagrams, which might matter
+| attribute                | purpose         |
+| ------------------------ | --------------- |
+| `data-ksd-button-labels` | Customising the labels displayed on the buttons                 |
+| `data-ksd-layout`        | Controlling the order of layout (buttons, diagram, captions)    |
+| `data-ksd-end-marker`    | Nominating the end-of-animation marker name (if it isn't `end`) |
+  
+This implies these settings apply to individual diagrams, which might matter
 if you've got more than one on the same page.
   
+### Button labels
+
+The default labels on the buttons are **step**, **run** and **stop** (and
+**reset** and **stopping**). You can override any of these with:
+
+    data-ksd-button-labels="stop:halt, stopping: halting"
+
+If you are generating these programmatically (e.g., an i18n build process)
+a JSON object in there also works, so this is equivalent:
+
+    data-ksd-button-labels='{"stop":"halt", "stopping":"halting"}'
+
+Any labels you don't specify remain the (English) defaults.
+
+### End of timeline
+
+The KeyshapeDiagram code assumes the end-of-animation marker is called `end`.
+If it isn't, add it explicitly:
+
+    data-ksd-end-marker="finished"
+
 ### Layout
 
-The defaul layout is `b-d-c`:
+The default layout is `b-d-c`:
 
 * `b` buttons above...
 * `d` diagram above...
@@ -145,50 +173,32 @@ The hyphens are optional (characters other than `b`, `c`, and `d` are ignored).
 
 You can change the layout further with CSS.
 
-### Button labels
-
-The default labels on the buttons are **step**, **run** and **stop** (and
-**reset** and **stopping**). You can override any of these with:
-
-    data-ksd-button-labels="stop:halt, stopping: halting"
-
-If you are generating these programmatically (e.g., an i18n build process)
-a JSON object in there also works, so this is equivalengt:
-
-    data-ksd-button-labels='{"stop":"halt", "stopping":"halting"}'
-
-Any labels you don't specify remain the (English) defaults.
-
-### End of timeline
-
-THe keyshape-diagram code assumes the end-of-animation marker is called `end`.
-If it isn't, add it explicitly:
-
-    data-ksd-end-marker="finished"
-
 
 ## CSS
 
-Each of the components has `ksd` class.
+Each of the components has `ksd` class, and extra classes to allow you to
+select them for further styling (the layout control only affects their
+relative order in the DOM).
 
-The three buttons are in a `div`:
+The three buttons are in a `<div>` with class `ksd-button-block`.
 
-    class="ksd ksd-button-block"
+The captions are in a tag (type depends on what you used) with class 
+`ksd-captions`.
 
-The captions are in a tag (type depends on what you used):
+If you didn't give the diagram (that is, the `<object>` element) a unique id,
+KeyshapeDiagram with allocate one. The id is also used to generate ids for
+the components and their children, so you can access them programmatically
+too. _TODO! This is a work in progress!_
 
-    class="ksd-captions"
+## Dev/implementation notes
 
-
-## Dev/implemention notes
-
-* TODO: although diagrams are granted unique IDs if they haven't already got one,
-  that's not bubbling down into their children yet — and it should to allow
-  CSS and JS custom manipulation.
+* TODO: although diagrams are granted unique IDs if they haven't already got
+  one, that's not fully bubbling down into their children yet — and it should
+  to allow CSS and JS custom manipulation.
 
 * something about removing the embedded captions (from the object tag) in
   consistently nut unexpectedly broke the SVG animation in Safari, so that's
-  now handled in an idosyncratic way
+  now handled in an idiosyncratic way
 
 * should be fine with multiple diagrams on the same page
 
