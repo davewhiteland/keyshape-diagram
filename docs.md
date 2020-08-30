@@ -206,7 +206,9 @@ too. _TODO! This is a work in progress!_
   hazard for material being embedded in things like Moodle)
 
 * maintaining aspect ratio of animations is still not straightforward in
-  CSS but that's not quite the remit of this project
+  CSS but that's not quite the remit of this project. However 
+  [this example](examples/ksd-example-external) seems to be pretty well-behaved
+  with CSS: `object.ksd { max-height: 60vmin; }`
   
 
 
