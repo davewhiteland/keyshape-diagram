@@ -29,3 +29,9 @@ What you get:
 * [JavaScript and CSS](https://github.com/davewhiteland/keyshape-diagram/tree/main/src) in `src/`
 * [examples](https://davewhiteland.github.io/keyshape-diagram/examples) in `examples/`
 * [documentation](https://davewhiteland.github.io/keyshape-diagram/docs) in `docs.md`
+
+
+---
+
+MIT License: _note:_ example animations may contain embedded JavaScript from
+Keyshape which is not part of this project.
