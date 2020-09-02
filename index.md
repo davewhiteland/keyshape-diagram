@@ -64,5 +64,30 @@ How you get it:
 * [documentation](https://davewhiteland.github.io/keyshape-diagram/docs) in `docs.md`
 * [JavaScript and CSS](https://github.com/davewhiteland/keyshape-diagram/tree/main/src) in `src/`
 
+### Sample HTML
+
+```html
+<link href="keyshape-diagram.css" rel="stylesheet" type="text/css" />
+<object class="ksd" data="my-diagram.svg?global=paused" type="image/svg+xml">
+  <ol class="ksd-captions">
+    <li>
+      This is shown before you press <em>step</em> or <em>run</em>.
+    </li>
+    <li>
+      This is displayed while the animation runs (starting from timeline marker
+      "start") up to timeline marker "next".
+    </li>
+    <li>
+      This is the caption that is shown as the animation runs
+      from "next" to "end".
+    </li>
+  </ol>
+</object>
+<div class="ksd-no-js">
+  This content is displayed if JavaScript (and hence animation)
+  is not supported on this page load.
+</div>
+<script src="keyshape-diagram.js"></script>
+```
 
 <script src="src/ksd.js" type="text/javascript"></script>
