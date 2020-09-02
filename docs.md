@@ -11,7 +11,8 @@ If you have...
 * an **animated SVG diagram**
   made with [Keyshape](https://www.keyshapeapp.com)
   (an SVG animation drawing app for Mac)
-* captions for each of those markers
+* captions for each step of the animation (you add markers to the timeline
+  for each step)
 * a web page you want it to play on
 
 ...then this wee bit of JavaScript (KeyshapeDiagram) will add buttons
