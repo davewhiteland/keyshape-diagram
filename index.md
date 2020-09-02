@@ -11,7 +11,7 @@ What you get:
 
 <link href="src/ksd.css" media="screen, projector, print" rel="stylesheet" type="text/css" />
 <div class="example" style="border:1px solid #ccc; padding:1em; margin:1em 0;">
-  <object class="ksd" id="server-svg" data="examples/http-200.svg?global=paused" type="image/svg+xml">
+  <object class="ksd" id="server-svg" data="examples/http-200.svg" type="image/svg+xml">
     <ol class="ksd-captions">
       <li id="start">
         The example starts with a call to <code>example.com/cat.html</code>
@@ -68,7 +68,7 @@ How you get it:
 
 ```html
 <link href="keyshape-diagram.css" rel="stylesheet" type="text/css" />
-<object class="ksd" data="my-diagram.svg?global=paused" type="image/svg+xml">
+<object class="ksd" data="my-diagram.svg" type="image/svg+xml">
   <ol class="ksd-captions">
     <li>
       This is shown before you press <em>step</em> or <em>run</em>.

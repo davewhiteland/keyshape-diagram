@@ -65,8 +65,7 @@ like this (by hauling in the `.svg`, `.js`, and `.css` files):
 
 ```html
 <link href="keyshape-diagram.css" rel="stylesheet" type="text/css" />
-
-<object class="ksd" data="my-diagram.svg?global=paused" type="image/svg+xml">
+<object class="ksd" data="my-diagram.svg" type="image/svg+xml">
   <ol class="ksd-captions">
     <li>
       This is shown before you press <em>step</em> or <em>run</em>.
