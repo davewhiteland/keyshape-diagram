@@ -1,9 +1,5 @@
 # Keyshape Diagram
 
-<div style="background:#ffdddd;border:1px solid red;padding:0.5em 1em; margin:1em 0;text-align:center">
-  Still a work in progress!
-</div>
-
 JavaScript support for stepping through animated SVG diagrams produced by
 [Keyshape](https://www.keyshapeapp.com).
 
@@ -54,17 +50,19 @@ How you get it:
 * create diagram in Keyshape with _named timeline markers_
 * export as SVG (with embedded or external JS)
 * add it to an `<object>` element with `class="ksd"` 
-* add HTML captions (caption id = timeline marker id)
-* add the KeyshapeDiagram JS (`ksd.js`) to the page
-* add the styling for the buttons (`ksd.css`)
+* drop an element _inside the object_ (e.g., `<div>` or `<ol>`) whose children
+  are captions, one per timeline marker
+* add the JavaScript (`ksd.js` or its contents)
+* add the styling for the buttons (`ksd.css` or its contents)
 * tweak some options (e.g., layout order of buttons/captions/diagram)
 * optionally add no-JavaScript fallback
 
+
 ## Files
 
-* [JavaScript and CSS](https://github.com/davewhiteland/keyshape-diagram/tree/main/src) in `src/`
-* [examples](https://davewhiteland.github.io/keyshape-diagram/examples) in `examples/`
+* [examples](https://davewhiteland.github.io/keyshape-diagram/examples) in `examples/` (more to come)
 * [documentation](https://davewhiteland.github.io/keyshape-diagram/docs) in `docs.md`
+* [JavaScript and CSS](https://github.com/davewhiteland/keyshape-diagram/tree/main/src) in `src/`
 
 
 <script src="src/ksd.js" type="text/javascript"></script>
