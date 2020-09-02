@@ -102,6 +102,7 @@ if (! window.KsDiagram) {
 
     function create_button(diagram, btn_type, container){
       let btn = document.createElement("button");
+      btn.id = PREFIX + btn_type + "-" + diagram._ksd.id;
       btn.innerText=diagram._ksd.labels[btn_type];
       btn.classList.add(PREFIX + btn_type);
       btn.addEventListener("click", function(){
