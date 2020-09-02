@@ -190,9 +190,9 @@ You can change the layout further with CSS.
 
 ## CSS and IDs of the elements
 
-Each of the components has extra classes to allow you to select them for
-further styling (the layout control only affects their relative order in the
-DOM). They also have IDs so you can manipulate them further if you want to.
+The components have extra classes to allow you to select them for further
+styling (the layout control only affects their relative order in the DOM). They
+also have IDs so you can manipulate them further if you want to.
 
 | Item                        | class              | id                      |
 | --------------------------- | ------------------ | ----------------------- |
