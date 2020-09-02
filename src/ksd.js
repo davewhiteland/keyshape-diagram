@@ -127,6 +127,10 @@ if (! window.KsDiagram) {
         && diagram._ksd.timeline.marker(diagram._ksd.markers[0]) === 0)
     }
 
+    function make_caption_id(diagram, cid) {
+      return PREFIX + diagram._ksd.id + "-" + cid;
+    }
+
     function init_diagram(id, container, diagram) {
       // all the KeyshapeDiagram properties, etc., are stored in ._ksd:
       diagram._ksd = {
@@ -190,11 +194,10 @@ if (! window.KsDiagram) {
         let start_value = caption_cntr.getAttribute("start") || 1;
         for (let i=0; i<captions.length; i++) {
           let c = captions[i];
-          let cid = c.id;
+          let cid = c.getAttribute(ATTRIB_KSD_ID) || c.id;
           c.removeAttribute("id");
           let new_c = c.cloneNode(true);
-          // FIXME add diagram id prefix
-          new_c.id=cid;
+          new_c.id = make_caption_id(diagram, cid);
           new_caption_cntr.append(new_c);
           new_c.classList.add(this.CLASS_HIDDEN);
           new_c.setAttribute("value", i + start_value); // for <ol>
@@ -301,10 +304,10 @@ if (! window.KsDiagram) {
 
     KsDiagram.show_caption = function(anim_id, caption_id) {
       let d = KsDiagram.diagrams[anim_id];
-      // FIXME add id to caption_id
+      let full_caption_id = make_caption_id(d, caption_id);
       for (let i=0; i<d._ksd.captions.length; i++) {
         let c = d._ksd.captions[i];
-        if (c.getAttribute("id") === caption_id) {
+        if (c.getAttribute("id") === full_caption_id) {
           c.classList.remove(CLASS_HIDDEN);
         } else {
           c.classList.add(CLASS_HIDDEN);
