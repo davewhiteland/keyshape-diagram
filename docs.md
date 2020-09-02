@@ -60,33 +60,35 @@ again. You can pass a scope (e.g., a fragment of the DOM) in as an argument to
 ### Method 1: using external files
 
 For example, with a Keyshape animation in `my-diagram.svg` whose primary
-timeline has markers you've called `start`, `next`, and `end`, you can embed it
-like this (by hauling in the `.svg`, `.js`, and `.css` files):
+timeline has markers you've called `start`, `middle`, and `end`, you can
+embed it like this (by hauling in the `.svg`, `.js`, and `.css` files):
 
 ```html
 <link href="keyshape-diagram.css" rel="stylesheet" type="text/css" />
 <object class="ksd" data="my-diagram.svg" type="image/svg+xml">
   <ol class="ksd-captions">
     <li>
-      This is shown before you press <em>step</em> or <em>run</em>.
+      This is shown before you press
+      <em>step</em> or <em>run</em>.
     </li>
     <li>
-      This is displayed while the animation runs (starting from timeline marker
-      "start") up to timeline marker "next".
+      This is displayed while the animation runs
+      (starting from first timeline marker "start")
+      to the next one (say, "middle").
     </li>
     <li>
-      This is the caption that is shown as the animation runs
-      from "next" to "end".
+      This is the caption that is shown as the
+      animation runs from "middle" to "end".
     </li>
   </ol>
 </object>
 <div class="ksd-no-js">
-  This content is displayed if JavaScript (and hence animation)
-  is not supported on this page load.
+  This content is displayed if JavaScript (and hence
+  animation) is not supported on this page load.
 </div>
-
 <script src="keyshape-diagram.js"></script>
 ```
+
 
 If the final (terminating) timeline marker is not called `end`, you must
 explicitly tell KeyshapeDiagram what it is: put a `data-ksd-end-marker`
