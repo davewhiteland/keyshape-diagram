@@ -167,7 +167,7 @@ if (! window.KsDiagram) {
       Object.keys(LABELS).forEach(function(key) {
         diagram._ksd.labels[key] = custom_labels[key] || LABELS[key];
       });
-      
+
       diagram._ksd.div_buttons = create_button_set(diagram);
 
       let caption_cntr = container.getElementsByClassName(CLASS_CAPTIONS);
@@ -189,17 +189,17 @@ if (! window.KsDiagram) {
         }
         let start_value = caption_cntr.getAttribute("start") || 1;
         for (let i=0; i<captions.length; i++) {
-          let t = captions[i];
-          let id = t.id;
-          t.removeAttribute("id");
-          let new_t = t.cloneNode(true);
+          let c = captions[i];
+          let cid = c.id;
+          c.removeAttribute("id");
+          let new_c = c.cloneNode(true);
           // FIXME add diagram id prefix
-          new_t.id=id;
-          new_caption_cntr.append(new_t);
-          new_t.classList.add(this.CLASS_HIDDEN);
-          new_t.setAttribute("value", i + start_value); // for <ol>
-          diagram._ksd.captions.push(new_t);
-          t.remove();
+          new_c.id=cid;
+          new_caption_cntr.append(new_c);
+          new_c.classList.add(this.CLASS_HIDDEN);
+          new_c.setAttribute("value", i + start_value); // for <ol>
+          diagram._ksd.captions.push(new_c);
+          c.remove();
         }
         diagram._ksd.div_captions.append(new_caption_cntr);
       }
@@ -303,11 +303,11 @@ if (! window.KsDiagram) {
       let d = KsDiagram.diagrams[anim_id];
       // FIXME add id to caption_id
       for (let i=0; i<d._ksd.captions.length; i++) {
-        let t = d._ksd.captions[i];
-        if (t.getAttribute("id") === caption_id) {
-          t.classList.remove(CLASS_HIDDEN);
+        let c = d._ksd.captions[i];
+        if (c.getAttribute("id") === caption_id) {
+          c.classList.remove(CLASS_HIDDEN);
         } else {
-          t.classList.add(CLASS_HIDDEN);
+          c.classList.add(CLASS_HIDDEN);
         }
       }
     }
