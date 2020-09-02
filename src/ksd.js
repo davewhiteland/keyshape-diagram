@@ -113,6 +113,7 @@ if (! window.KsDiagram) {
 
     function create_button_set(diagram){
       let btn_container = document.createElement("div");
+      btn_container.id = CLASS_BTN_BLOCK + "-" + diagram._ksd.id;
       btn_container.classList.add(KSD, CLASS_BTN_BLOCK);
       diagram._ksd.button_step = create_button(diagram, KSD_STEP, btn_container);
       diagram._ksd.button_run = create_button(diagram, KSD_RUN, btn_container);
