@@ -193,8 +193,15 @@ if (! window.KsDiagram) {
         }
         let start_value = caption_cntr.getAttribute("start") || 1;
         for (let i=0; i<captions.length; i++) {
+          let auto_id = "_" + i;
+          if (i >= diagram._ksd.markers.length) {
+            console.log("KsDiagram: [" + diagram._ksd.id + "] has more captions than markers");
+          } else {
+            auto_id = diagram._ksd.markers[i];
+          }
           let c = captions[i];
-          let cid = c.getAttribute(ATTRIB_KSD_ID) || c.id;
+          let cid = c.getAttribute(ATTRIB_KSD_ID) || c.id || auto_id;
+          console.log("cid=" + cid);
           c.removeAttribute("id");
           let new_c = c.cloneNode(true);
           new_c.id = make_caption_id(diagram, cid);
