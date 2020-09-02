@@ -4,13 +4,22 @@ title: KeyshapeDiagram docs
 
 # KeyshapeDiagram: `ksd.js`
 
-<div style="background:#ffdddd;border:1px solid red;padding:0.5em 1em; margin:1em 0;text-align:center">
-  Work in progress!
-</div>
+# What
 
-KeyshapeDiagram is a wee JavaScript program which adds the buttons and manages
-the presentation of animated SVG diagrams that have been created with
-[Keyshape](https://www.keyshapeapp.com) (an SVG animation drawing app for Mac).
+If you have...
+
+* an **animated SVG diagram**
+  made with [Keyshape](https://www.keyshapeapp.com)
+  (an SVG animation drawing app for Mac)
+  
+* captions for each of those markers
+
+* a web page you want it to play on
+
+...then this wee bit of JavaScript (KeyshapeDiagram) will add buttons
+so you can step/run/reset it, whilst displaying the corresponding captions.
+
+Great for diagrams that let people figure out what's going on in their own time!
 
 ## Example
 
@@ -18,27 +27,28 @@ See [an example](examples/ksd-example-external).
 
 ## How
 
+Code: see the HTML below (or look at the source in [these examples](examples)).
+
+Process:
+
 * create diagram in Keyshape with _named timeline markers_
 * export as SVG (with embedded or external JS)
 * add it to an `<object>` element with `class="ksd"` 
-* add HTML captions (caption id = timeline marker id)
-* add this `ksd.js` to the page
-* add the `ksd.css` styling for the buttons
+* drop an element _inside the object_ (e.g., `<div>` or `<ol>`) whose childten are captions, one per timeline marker
+* add the JavaScript (`ksd.js` or its contents)
+* add the styling for the buttons (`ksd.css` or its contents)
 * tweak some options (e.g., layout order of buttons/captions/diagram)
 * optionally add no-JavaScript fallback
-
-What you get:
-
-* three buttons for stepping, running, and stopping (or resetting) the animation
-* captions displayed as the animation progresses
 
 
 ## More detail
 
 When you've exported the SVG, embed it with an `<object>` tag with class `ksd`,
 together with (optional) captions. Captions must be in a single container (any
-tag name) with class `ksd-captions`, with ids matching the names of the timeline
-markers.
+tag name) with class `ksd-captions`. They'll be matched against the timeline
+markers in the order they appear, unless you explicitly add the name of the
+marker it applies to with `data-ksd-id` (or `id`... but be careful because that
+might not be unique in the DOM you're inserting it into).
 
 The KeyshapeDiagram code automatically triggers a call to
 `window.KsDiagram.init()` when it loads: this detects and initialises any
@@ -47,31 +57,32 @@ has happened, you can initialise them by calling `window.KsDiagram.init()`
 again. You can pass a scope (e.g., a fragment of the DOM) in as an argument to
 `init()` — by default, it is the whole `document`.
 
-### External files
+### Method 1: using external files
 
-For example, with a Keyshape animation whose primary timeline has markers you've
-called `start`, `next`, and `end`:
+For example, with a Keyshape animation in `my-diagram.svg` whose primary
+timeline has markers you've called `start`, `next`, and `end`, you can embed it
+like this (by hauling in the `.svg`, `.js`, and `.css` files):
 
 ```html
 <link href="keyshape-diagram.css" rel="stylesheet" type="text/css" />
 
 <object class="ksd" data="my-diagram.svg?global=paused" type="image/svg+xml">
   <ol class="ksd-captions">
-    <li id="start">
+    <li>
       This is shown before you press <em>step</em> or <em>run</em>.
     </li>
-    <li id="next">
+    <li>
       This is displayed while the animation runs (starting from timeline marker
       "start") up to timeline marker "next".
     </li>
-    <li id="end">
+    <li>
       This is the caption that is shown as the animation runs
       from "next" to "end".
     </li>
   </ol>
 </object>
 <div class="ksd-no-js">
-  Optionally add content that is displayed if JavaScript (and hence animation)
+  This content is displayed if JavaScript (and hence animation)
   is not supported on this page load.
 </div>
 
@@ -85,15 +96,15 @@ attribute on the `<object>`.
 
 ### In-line
 
-It's also possible to embed everything in-line. In some cases this might be
-more convenient — for example, embedding a diagram into a single page without
-worrying about any other setup.
+If you don't want to use external files, you can do the same thing but have
+everything in-line. In some cases this might be more convenient — for example,
+embedding a diagram into a single page without worrying about any other setup.
 
 
 ## Keyshape requirements
 
 [Keyshape](https://www.keyshapeapp.com) is a neat little app for making SVG
-animations on the Mac. A key capability that the KeyshapeDiagram code is
+animations on the Mac. A key capability that this KeyshapeDiagram code is
 exploiting is that it lets you name the markers on the timeline: those are used
 as the breakpoints in the animation.
 
@@ -120,8 +131,9 @@ hiding them).
 Any elements with the class `ksd-no-js` are hidden if JavaScript is enabled.
 Use these for fall-back content.
 
-Currently the SVG diagram _is_ displayed if JavaScript is not available, but
-that is probably going to change: a work-in-progress.
+Currently the SVG diagram _is_ displayed if JavaScript is not available; maybe
+that will change (depending on more `data-ksd-` settings maybe?): that's for
+future development).
 
 ## Extra settings
 
@@ -132,9 +144,11 @@ Add `data-` attributes to the `<object>` element for more control:
 | `data-ksd-button-labels` | Customising the labels displayed on the buttons                 |
 | `data-ksd-layout`        | Controlling the order of layout (buttons, diagram, captions)    |
 | `data-ksd-end-marker`    | Nominating the end-of-animation marker name (if it isn't `end`) |
-  
-This implies these settings apply to individual diagrams, which might matter
-if you've got more than one on the same page.
+
+See below for details for each of these settings.
+
+Because you're putting them on the `<object>` element containing one diagram
+  within it, so can be different for other diagrams on the same page.
   
 ### Button labels
 
@@ -174,41 +188,52 @@ The hyphens are optional (characters other than `b`, `c`, and `d` are ignored).
 You can change the layout further with CSS.
 
 
-## CSS
 
-Each of the components has `ksd` class, and extra classes to allow you to
-select them for further styling (the layout control only affects their
-relative order in the DOM).
+## CSS and IDs of the elements
 
-The three buttons are in a `<div>` with class `ksd-button-block`.
+Each of the components has extra classes to allow you to select them for
+further styling (the layout control only affects their relative order in the
+DOM). They also have IDs so you can manipulate them further if you want to.
 
-The captions are in a tag (type depends on what you used) with class 
-`ksd-captions`.
+| Item                        | class              | id                      |
+| --------------------------- | ------------------ | ----------------------- |
+| `<div>` containing buttons  | `ksd-button-block` | `ksd-button-block-$$$`  |
+| step `<button>`             | `ksd-step`         | `ksd-step-$$$`          |
+| run `<button>`              | `ksd-run`          | `ksd-run-$$$`           |
+| stop/reset `<button>`       | `ksd-stop`         | `ksd-stop-$$$`          |
+| element containing captions | `ksd-captions`     | `ksd-captions-$$$`      |
+| caption                     | `ksd-caption`      | `ksd-caption-$$$-@@@`   |
 
-If you didn't give the diagram (that is, the `<object>` element) a unique id,
-KeyshapeDiagram with allocate one. The id is also used to generate ids for
-the components and their children, so you can access them programmatically
-too. _TODO! This is a work in progress!_
+* `$$$` is the ID of the diagram. This will be whatever `id` you gave the
+  `<object>` tag, or an ID allocated by KeyshapeDiagram if you didn't.
+  (Furthermore if you _did_ allocate one but it was the same as another
+  diagram's, KeyshapeDiagram will have amended it). The ID allocated is
+  returned by the `KsDiagram.add_diagram(container)` function, but if you
+  didn't call that yourself you can find all the diagram `id`s in the
+  `window.KsDiagram.diagram_ids` array (or inspect the `data-ksd-id` 
+  attribute that has magically appeared on the `<object>`).
+* `@@@` is the ID of the corresponding timeline marker.
+
 
 ## Dev/implementation notes
 
-* TODO: although diagrams are granted unique IDs if they haven't already got
-  one, that's not fully bubbling down into their children yet — and it should
-  to allow CSS and JS custom manipulation.
+* Everything KeyshapeDiagram adds to the DOM is prefixed with `ksd-` to avoid
+  namespace clashes (e.g., CSS and DOM IDs). So avoid using those unless you
+  deliberately mean to override stuff.
 
-* something about removing the embedded captions (from the object tag) in
-  consistently nut unexpectedly broke the SVG animation in Safari, so that's
-  now handled in an idiosyncratic way
+* Something about removing the embedded captions (from the `<object>` tag) 
+  consistently but unexpectedly broke the SVG animation _just in Safari_, so
+  that' might be why that code looks a bit idiosyncratic way. It is. Sorry.
 
-* should be fine with multiple diagrams on the same page
+* Should be fine with multiple diagrams on the same page.
 
-* should be resilient to the JS being loaded more than once (occupational
-  hazard for material being embedded in things like Moodle)
+* Should be resilient to the JS being loaded more than once (occupational
+  hazard for material being embedded in things like Moodle).
 
-* maintaining aspect ratio of animations is still not straightforward in
-  CSS but that's not quite the remit of this project. However 
-  [this example](examples/ksd-example-external) seems to be pretty well-behaved
-  with CSS: `object.ksd { max-height: 60vmin; }`
+* Maintaining aspect ratio of animations is still not straightforward in CSS
+  but that's not quite the remit of this project. However, full-page examples
+  like [this example](examples/ksd-example-external) seem to be pretty
+  well-behaved with CSS like, e.g., `object.ksd{max-height:60vmin;}`
   
 
 
