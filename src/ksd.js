@@ -33,6 +33,7 @@ if (! window.KsDiagram) {
     
     const CLASS_KSD       = KSD,
           CLASS_BTN_BLOCK = PREFIX + "btn-block",
+          CLASS_CAPTION   = PREFIX + "caption",
           CLASS_CAPTIONS  = PREFIX + "captions",
           CLASS_DISABLED  = PREFIX + "disabled",
           CLASS_HIDDEN    = PREFIX + "hidden",
@@ -128,8 +129,8 @@ if (! window.KsDiagram) {
         && diagram._ksd.timeline.marker(diagram._ksd.markers[0]) === 0)
     }
 
-    function make_caption_id(diagram, cid) {
-      return PREFIX + diagram._ksd.id + "-" + cid;
+    function make_caption_id(diagram, cid) { // yes, it's long
+      return PREFIX + CLASS_CAPTION + "-" + diagram._ksd.id + "-" + cid;
     }
 
     function init_diagram(id, container, diagram) {
@@ -186,7 +187,7 @@ if (! window.KsDiagram) {
         caption_cntr = caption_cntr[0];
         caption_cntr.classList.remove(CLASS_CAPTIONS);
         let new_caption_cntr = document.createElement(caption_cntr.tagName);
-        new_caption_cntr.classList.add(CLASS_CAPTIONS);
+        new_caption_cntr.classList.add(KSD, CLASS_CAPTIONS);
         new_caption_cntr.id = CLASS_CAPTIONS + "-" + id;
         let captions = [];
         for (let i=0; i<caption_cntr.children.length; i++) {
@@ -202,12 +203,11 @@ if (! window.KsDiagram) {
           }
           let c = captions[i];
           let cid = c.getAttribute(ATTRIB_KSD_ID) || c.id || auto_id;
-          console.log("cid=" + cid);
           c.removeAttribute("id");
           let new_c = c.cloneNode(true);
           new_c.id = make_caption_id(diagram, cid);
           new_caption_cntr.append(new_c);
-          new_c.classList.add(this.CLASS_HIDDEN);
+          new_c.classList.add(KSD, CLASS_CAPTION, CLASS_HIDDEN);
           new_c.setAttribute("value", i + start_value); // for <ol>
           diagram._ksd.captions.push(new_c);
           c.remove();
