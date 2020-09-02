@@ -25,35 +25,36 @@
 <!--  Note:                                                               -->
 <!--    * object containing SVG must have class="ksd"                     -->
 <!--    * the element class="ksd-captions" is inside the object...        -->
-<!--    * the id of each caption corresponds to the name of a marker      -->
-<!--      in the animation's timeline (there are some restrictions!)      -->
+<!--    * the data-ksd-id value (or else the id) of each caption          -->
+<!--    * corresponds to the name of a marker in the animation's          -->
+<!--    * timeline (there are some restrictions!)                         -->
   
 <div class="example">
   
   <object class="ksd" id="server-svg" data="http-200.svg?global=paused" type="image/svg+xml">
     <ol class="ksd-captions">
-      <li id="start">
+      <li>
         The example starts with a call to <code>example.com/cat.html</code>
       </li>
-      <li id="get-cat-html">
+      <li>
         The client (browser) makes a GET request for the resource (<code>cat.html</code>)
       </li>
-      <li id="200-cat-html">
+      <li>
         The webserver serves the GET request: it sends a response
         with <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank">code&nbsp;200</a>
         (“success”) and <code>cat.html</code> as the payload.
       </li>
-      <li id="get-css-and-img">
+      <li>
         The browser parses the HTML page and tries to display it.
         The page contains CSS and an image, so the browser requests
         each of these with new GET requests.
       </li>
-      <li id="200-css-and-img">
+      <li>
         The server responds to each request with 
         <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank">code&nbsp;200</a>
         (“success”) and the requested file as the payload.
       </li>
-      <li id="end">
+      <li>
         The CSS arrives and is applied (the page goes pink). The
         image arrives and is displayed (the cat appears).
       </li>
