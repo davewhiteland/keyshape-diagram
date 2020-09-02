@@ -224,7 +224,7 @@ also have IDs so you can manipulate them further if you want to.
 
 * Something about removing the embedded captions (from the `<object>` tag) 
   consistently but unexpectedly broke the SVG animation _just in Safari_, so
-  that' might be why that code looks a bit idiosyncratic way. It is. Sorry.
+  that might be why that code looks a bit idiosyncratic. It is. Sorry.
 
 * Should be fine with multiple diagrams on the same page.
 
