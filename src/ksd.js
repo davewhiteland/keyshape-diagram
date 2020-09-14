@@ -177,7 +177,7 @@ if (! window.KsDiagram) {
 
       diagram._ksd.div_buttons = create_button_set(diagram);
 
-      let caption_cntr = container.getElementsByClassName(CLASS_CAPTIONS);
+      let caption_cntr = container.parentElement.getElementsByClassName(CLASS_CAPTIONS);
       if (caption_cntr.length === 0) {
         console.log("KsDiagram: [" + id + "] no captions");
       } else {
@@ -186,6 +186,8 @@ if (! window.KsDiagram) {
             + CLASS_CAPTIONS + "\" element, found " + caption_cntr.length);
         }
         caption_cntr = caption_cntr[0];
+        caption_cntr.remove(); // replace with a constructed duplicate to...
+        caption_cntr.removeAttribute("id"); // ...avoid possible id collisions
         caption_cntr.classList.remove(CLASS_CAPTIONS);
         let new_caption_cntr = document.createElement(caption_cntr.tagName);
         new_caption_cntr.classList.add(KSD, CLASS_CAPTIONS);
@@ -214,7 +216,7 @@ if (! window.KsDiagram) {
           c.remove();
         }
         diagram._ksd.div_captions.append(new_caption_cntr);
-      }
+      } // original caption_cntr garbage collected
 
       // layout: e.g., "b-d-c" where b=buttons, d=diagram, c=captions
       let items = {
