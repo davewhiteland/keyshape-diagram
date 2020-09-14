@@ -48,8 +48,8 @@ How you get it:
 
 * create diagram in Keyshape with _named timeline markers_
 * export as SVG (with embedded or external JS)
-* add it to an `<object>` element with `class="ksd"` 
-* drop an element _inside the object_ (e.g., `<div>` or `<ol>`) whose children
+* add it either as `<svg>` or `<object>` element with `class="ksd"` 
+* drop in a sibling element (e.g., `<div>` or `<ol>`) whose children
   are captions, one per timeline marker
 * add the JavaScript (`ksd.js` or its contents)
 * add the styling for the buttons (`ksd.css` or its contents)
