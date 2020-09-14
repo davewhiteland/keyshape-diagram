@@ -96,7 +96,7 @@ explicitly tell KeyshapeDiagram what it is: put a `data-ksd-end-marker`
 attribute on the `<object>`.
 
 
-### In-line
+### Method 1: putting things in-line
 
 If you don't want to use external files, you can do the same thing but have
 everything in-line. In some cases this might be more convenient — for example,
@@ -104,6 +104,12 @@ embedding a diagram into a single page without worrying about any other setup.
 This means your SVG really is just an `<svg>` tag (not an `<object>`), and
 the external JavaScript can be the `<script>` tag's inline contents, instead
 of loaded externally by `src`.
+
+You can see some examples of this in [these examples](examples).
+
+This was intended for use on the Moodle... but it's turning out to be, uh,
+problematic.
+
 
 ## Keyshape requirements
 
