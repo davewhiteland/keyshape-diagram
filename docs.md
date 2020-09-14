@@ -4,7 +4,7 @@ title: KeyshapeDiagram docs
 
 # KeyshapeDiagram: `ksd.js`
 
-# What
+## What
 
 If you have...
 
@@ -22,7 +22,7 @@ Great for diagrams that let people figure out what's going on in their own time!
 
 ## Example
 
-See [an example](examples/ksd-example-external).
+See [an example](examples/ksd-example-external)
 
 ## How
 
