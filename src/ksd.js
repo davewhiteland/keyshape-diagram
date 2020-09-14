@@ -20,6 +20,7 @@ if (! window.KsDiagram) {
           ATTRIB_END_MARKER = "data-ksd-end-marker",
           ATTRIB_KSD_ID = "data-ksd-id", // indicates diagram is init'd
           ATTRIB_LAYOUT = "data-ksd-layout",
+          ATTRIB_KSD_REJECT = "data-ksd-reject", // mark bad diagrams
           DEFAULT_LAYOUT = "bdc", // b=buttons d=diagram c=captions
           LABELS = {}; 
 
@@ -267,12 +268,36 @@ if (! window.KsDiagram) {
       if (scope === undefined) {
         scope = document;
       }
+      let qty_svg_scripts = 0;
       let ksd_elements = scope.getElementsByClassName(KSD);
       let ksd_objects = [];
       for (let i=0; i < ksd_elements.length; i++) {
-        if (ksd_elements[i].tagName === "OBJECT"
-          && ! ksd_elements[i].getAttribute(ATTRIB_KSD_ID)){
-          ksd_objects.push(ksd_elements[i]);
+        let el = ksd_elements[i];
+        if (el.getAttribute(ATTRIB_KSD_ID) || el.getAttribute(ATTRIB_KSD_REJECT)) {
+          continue; // already handled this one
+        }
+        let tag = el.tagName.toUpperCase();
+        if (tag === "OBJECT"){
+          ksd_objects.push(el);
+        } else if (tag === "SVG" && window.KeyshapeJS) {
+          window.KeyshapeJS.globalPause();
+          if (el.children.length > 0 &&
+            el.children[el.children.length-1].tagName.toUpperCase() === "SCRIPT") {
+            qty_svg_scripts += 1;
+            if (qty_svg_scripts > 1) { // if there's > 1, we have a problem
+              // animation(s) probably failing so: remove element, show warning
+              // TODO: is there a less catastrophic save?
+              console.log("KsDiagram: WARNING: inline SVGs contain duplicate KeyshapeJS scripts");
+              console.log("KsDiagram: ...use _one_ external script (or embed in <objects>)");
+              let warning = document.createElement("code");
+              warning.textContent = "KsDiagram: SVG removed (duplicate <script>)";
+              el.replaceWith(warning);
+              continue;
+            }
+          }
+          ksd_objects.push(el);
+        } else { // abandon hope on this one
+          el.setAttribute(ATTRIB_KSD_REJECT, "1");
         }
       }
       let is_init_complete = true;
@@ -280,6 +305,8 @@ if (! window.KsDiagram) {
         if (ksd_objects[i].contentDocument
           && ksd_objects[i].contentDocument.defaultView.KeyshapeJS) {
             KsDiagram.add_diagram(ksd_objects[i]);
+        } else if (window.KeyshapeJS) {
+          KsDiagram.add_diagram(ksd_objects[i]);
         } else {
           is_init_complete = false;
         }
@@ -379,11 +406,16 @@ if (! window.KsDiagram) {
     }
 
     KsDiagram.add_diagram = function(container){
-      if (!(container.contentDocument && container.contentDocument.defaultView.KeyshapeJS)) {
-        console.log("KsDiagram: missing diagram");
+      let diagram = null;
+      if (container.contentDocument && container.contentDocument.defaultView.KeyshapeJS) {
+        diagram = container.contentDocument.defaultView.KeyshapeJS;
+      } else if (container.tagName.toUpperCase() === 'SVG' && window.KeyshapeJS) {
+        diagram = window.KeyshapeJS;
+      } else {
+        console.log("KsDiagram: can't implement diagram — needs object or svg");
+        container.setAttribute(ATTRIB_KSD_REJECT, "1"); // mark as rejected
         return;
       }
-      let diagram = container.contentDocument.defaultView.KeyshapeJS;
       let id = container.getAttribute("id");
       let diagram_count = KsDiagram.diagram_ids.length;
       if (id == undefined) {
