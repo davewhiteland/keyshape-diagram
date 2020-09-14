@@ -32,8 +32,8 @@ Process:
 
 * create diagram in Keyshape with _named timeline markers_
 * export as SVG (with embedded or external JS)
-* add it to an `<object>` element with `class="ksd"` 
-* drop an element _inside the object_ (e.g., `<div>` or `<ol>`) whose children
+* add it either as `<svg>` or `<object>` element with `class="ksd"` 
+* drop in a sibling element (e.g., `<div>` or `<ol>`) whose children
   are captions, one per timeline marker
 * add the JavaScript (`ksd.js` or its contents)
 * add the styling for the buttons (`ksd.css` or its contents)
@@ -43,12 +43,12 @@ Process:
 
 ## More detail
 
-When you've exported the SVG, embed it with an `<object>` tag with class `ksd`,
-together with (optional) captions. Captions must be in a single container (any
-tag name) with class `ksd-captions`. They'll be matched against the timeline
-markers in the order they appear, unless you explicitly add the name of the
-marker it applies to with `data-ksd-id` (or `id`... but be careful because that
-might not be unique in the DOM you're inserting it into).
+When you've exported the SVG, embed it with an `<object>` tag with class `ksd`.
+Add (optional) captions under the same parent. Captions must be in a single
+container (any tag name) with class `ksd-captions`. They'll be matched against
+the timeline markers in the order they appear, unless you explicitly add the
+name of the marker it applies to with `data-ksd-id` (or `id`... but be careful
+because that might not be unique in the DOM you're inserting it into).
 
 The KeyshapeDiagram code automatically triggers a call to
 `window.KsDiagram.init()` when it loads: this detects and initialises any
@@ -64,8 +64,9 @@ timeline has markers you've called `start`, `middle`, and `end`, you can
 embed it like this (by hauling in the `.svg`, `.js`, and `.css` files):
 
 ```html
-<link href="keyshape-diagram.css" rel="stylesheet" type="text/css" />
-<object class="ksd" data="my-diagram.svg" type="image/svg+xml">
+<link href="ksd.css" rel="stylesheet" type="text/css" />
+<div>
+  <object class="ksd" data="my-diagram.svg" type="image/svg+xml"></object>
   <ol class="ksd-captions">
     <li>
       This is caption shown before you press
@@ -81,12 +82,12 @@ embed it like this (by hauling in the `.svg`, `.js`, and `.css` files):
       runs from "middle" to "end".
     </li>
   </ol>
-</object>
-<div class="ksd-no-js">
-  This content is displayed if JavaScript (and hence
-  animation) is not supported on this page load.
+  <div class="ksd-no-js">
+    This content is displayed if JavaScript (and hence
+    animation) is not supported on this page load.
+  </div>
 </div>
-<script src="keyshape-diagram.js"></script>
+<script src="ksd.js"></script>
 ```
 
 
@@ -100,7 +101,9 @@ attribute on the `<object>`.
 If you don't want to use external files, you can do the same thing but have
 everything in-line. In some cases this might be more convenient — for example,
 embedding a diagram into a single page without worrying about any other setup.
-
+This means your SVG really is just an `<svg>` tag (not an `<object>`), and
+the external JavaScript can be the `<script>` tag's inline contents, instead
+of loaded externally by `src`.
 
 ## Keyshape requirements
 
@@ -125,9 +128,10 @@ named-markers API.
 ## Graceful degradation
 
 If the target browser does not support SVG — frankly very rare, these days —
-the captions will be displayed as a fall back (because they are within the
-`<object>` tag). You can style those with regular CSS (including, if required,
-hiding them).
+you can put a fall-back `<img>` in there.
+
+If JavaScript isn't enabled, the captions will be displayed in full. This is
+_probably_ what you want, but if it isn't, you can style them with regular CSS (including, if required, hiding them).
 
 Any elements with the class `ksd-no-js` are hidden if JavaScript is enabled.
 Use these for fall-back content.
@@ -222,13 +226,14 @@ also have IDs so you can manipulate them further if you want to.
   namespace clashes (e.g., CSS and DOM IDs). So avoid using those unless you
   deliberately mean to override stuff.
 
-* Something about removing the embedded captions (from the `<object>` tag) 
-  consistently but unexpectedly broke the SVG animation _just in Safari_, so
-  that might be why that code looks a bit idiosyncratic. It is. Sorry.
+* If you use in-line SVGs (not `<object>`), be careful about duplicate KeyshapeJS code: ideally, don't embed it in your exported SVG and load it
+  as a separate library instead. This helper script isn't helping much with
+  that yet and is currently aggressively removing diagrams from the DOM if it
+  _thinks_ they might be bad — this is probably wrong: TODO.
 
 * Should be fine with multiple diagrams on the same page.
 
-* Should be resilient to the JS being loaded more than once (occupational
+* Should be resilient to the ksd JS being loaded more than once (occupational
   hazard for material being embedded in things like Moodle).
 
 * Maintaining aspect ratio of animations is still not straightforward in CSS

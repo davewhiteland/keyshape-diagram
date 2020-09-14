@@ -67,8 +67,10 @@ How you get it:
 ## Sample HTML
 
 ```html
-<link href="keyshape-diagram.css" rel="stylesheet" type="text/css" />
-<object class="ksd" data="my-diagram.svg" type="image/svg+xml">
+<link href="ksd.css" rel="stylesheet" type="text/css" />
+<div>
+  <object class="ksd" data="my-diagram.svg" type="image/svg+xml">
+  </object>
   <ol class="ksd-captions">
     <li>
       This caption is shown before you press
@@ -84,12 +86,12 @@ How you get it:
       runs from "middle" to "end".
     </li>
   </ol>
-</object>
-<div class="ksd-no-js">
-  This content is displayed if JavaScript (and hence
-  animation) is not supported on this page load.
+  <div class="ksd-no-js">
+    This content is displayed if JavaScript (and hence
+    animation) is not supported on this page load.
+  </div>
 </div>
-<script src="keyshape-diagram.js"></script>
+<script src="ksd.js"></script>
 
 ```
 
