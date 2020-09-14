@@ -26,7 +26,7 @@
 .ksd button.ksd-stop.ksd-stopping,
 .ksd button.ksd-stop.ksd-stopping:hover { background-color: #ff0000; color: #fff;}
 
-.ksd .ksd-captions p, .ksd .ksd-captions li {padding: 1em; }
+.ksd-captions p, .ksd-captions li {padding: 1em; }
 .ksd-hidden {
   display: none;
 }
