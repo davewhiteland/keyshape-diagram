@@ -208,7 +208,7 @@ also have IDs so you can manipulate them further if you want to.
 
 | Item                        | class              | id                      |
 | --------------------------- | ------------------ | ----------------------- |
-| `<div>` containing buttons  | `ksd-button-block` | `ksd-button-block-$$$`  |
+| `<div>` containing buttons  | `ksd-btn-block`    | `ksd-btn-block-$$$`     |
 | step `<button>`             | `ksd-step`         | `ksd-step-$$$`          |
 | run `<button>`              | `ksd-run`          | `ksd-run-$$$`           |
 | stop/reset `<button>`       | `ksd-stop`         | `ksd-stop-$$$`          |
